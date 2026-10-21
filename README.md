@@ -83,7 +83,8 @@ Nothing is invented.
 
 ## Going live
 
-Any static host works. The simplest is GitHub Pages: **Settings → Pages → Deploy from a branch →
-`main` / root**. Once there is a real domain, make the `og:image` URL in `index.html` absolute
-(`https://<domain>/assets/img/og-card.jpg`), because link previews on X, Facebook and Discord need a
-full URL.
+The site is live on GitHub Pages at **https://olivernealdev.github.io/GameBridgeWebsite/**, deployed
+from `main` / root. Every push to `main` redeploys it within a minute or two.
+
+Any static host works. If it moves to its own domain, update the `og:url` and `og:image` URLs in
+`index.html` to match, because link previews on X, Facebook and Discord need a full URL.
