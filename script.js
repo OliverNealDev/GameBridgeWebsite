@@ -83,11 +83,16 @@
     document.querySelector('[data-sponsors-wrap]').hidden = true;
   }
 
-  var contact = document.querySelector('[data-contact]');
-  if (contact) {
-    if (config.contactEmail) contact.href = 'mailto:' + config.contactEmail + '?subject=' + encodeURIComponent('Sponsoring or exhibiting at Game Bridge');
-    else if (socials.facebook) contact.href = socials.facebook;
-  }
+  // Contact links use the email when there is one, otherwise the Facebook page.
+  document.querySelectorAll('[data-contact]').forEach(function (link) {
+    if (config.contactEmail) {
+      var subject = link.dataset.contact === 'sponsor' ? '?subject=' + encodeURIComponent('Sponsoring or exhibiting at Game Bridge') : '';
+      link.href = 'mailto:' + config.contactEmail + subject;
+      if (link.hasAttribute('data-contact-show')) link.textContent = config.contactEmail;
+    } else if (socials.facebook) {
+      link.href = socials.facebook;
+    }
+  });
 
   var year = document.querySelector('[data-year]');
   if (year) year.textContent = new Date().getFullYear();
@@ -122,11 +127,11 @@
     message.hidden = !text;
   }
 
-  // Mailchimp messages arrive as HTML with a leading "0 - " field index.
+  // Mailchimp messages arrive as HTML with a leading "0 - " field index. DOMParser
+  // builds an inert document, so nothing in the message can run or load.
   function cleanMailchimpMessage(html) {
-    var div = document.createElement('div');
-    div.innerHTML = String(html || '').replace(/^\d+\s*-\s*/, '');
-    return div.textContent.trim();
+    var text = String(html || '').replace(/^\d+\s*-\s*/, '');
+    return new DOMParser().parseFromString(text, 'text/html').body.textContent.trim();
   }
 
   // Mailchimp's post-json endpoint only speaks JSONP, so this is a script tag, not fetch.

@@ -3,24 +3,31 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://*.list-manage.com; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; form-action 'self' https://*.list-manage.com; base-uri 'self'; object-src 'none'; frame-src 'none'; upgrade-insecure-requests">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
   <title>Game Bridge | Games industry networking in the North East</title>
   <meta name="description" content="Game Bridge is a free games industry networking night in Middlesbrough, plus a free coach to GaMaYo. Running in the North East of England since 2013.">
+  <link rel="canonical" href="https://olivernealdev.github.io/GameBridgeWebsite/">
   <meta name="theme-color" content="#15172f">
+  <meta name="color-scheme" content="light">
 
   <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Game Bridge">
+  <meta property="og:locale" content="en_GB">
   <meta property="og:title" content="Game Bridge">
   <meta property="og:description" content="Free games industry networking in the North East of England, since 2013.">
   <meta property="og:url" content="https://olivernealdev.github.io/GameBridgeWebsite/">
   <meta property="og:image" content="https://olivernealdev.github.io/GameBridgeWebsite/assets/img/og-card.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="The Game Bridge logo over a photo of a busy Game Bridge night">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@Game_Bridge">
 
-  <link rel="icon" type="image/png" href="assets/img/favicon.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="assets/img/favicon.png">
   <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap" rel="stylesheet">
+  <link rel="preload" href="assets/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="styles.css">
 
   <script type="application/ld+json">
@@ -28,9 +35,10 @@
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": "Game Bridge",
+    "url": "https://olivernealdev.github.io/GameBridgeWebsite/",
     "description": "Games industry networking event and community in the North East of England.",
     "foundingDate": "2013",
-    "logo": "assets/img/gb-logo.png",
+    "logo": "https://olivernealdev.github.io/GameBridgeWebsite/assets/img/gb-logo.png",
     "sameAs": ["https://x.com/Game_Bridge", "https://www.facebook.com/gamebridge", "https://www.eventbrite.co.uk/o/game-bridge-4494242007"]
   }
   </script>
@@ -38,7 +46,7 @@
 <body>
   <a class="skip" href="#events">Skip to events</a>
 
-  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <svg class="sprite" aria-hidden="true">
     <symbol id="i-x" viewBox="0 0 24 24"><path fill="currentColor" d="M18.9 1.15h3.68l-8.04 9.19L24 22.85h-7.4l-5.8-7.58-6.64 7.58H.47l8.6-9.83L0 1.15h7.6l5.24 6.93zm-1.29 19.5h2.04L6.49 3.24H4.3z"/></symbol>
     <symbol id="i-fb" viewBox="0 0 24 24"><path fill="currentColor" d="M9.1 23.69v-7.98H6.63v-3.67H9.1v-1.58c0-4.09 1.85-5.98 5.86-5.98.4 0 .96.04 1.47.1.38.04.76.11 1.14.2v3.32a8.6 8.6 0 0 0-1.39-.05c-.7 0-1.26.1-1.67.31-.29.15-.52.36-.68.62-.26.42-.38 1-.38 1.75v1.3h3.92l-.67 3.67h-3.25v8.24C19.4 23.24 24 18.18 24 12.04c0-6.62-5.37-12-12-12s-12 5.38-12 12c0 5.63 3.87 10.35 9.1 11.65z"/></symbol>
   </svg>
@@ -46,7 +54,7 @@
   <header class="site-header">
     <div class="wrap header-inner">
       <a class="brand" href="#top" aria-label="Game Bridge, back to top">
-        <img src="assets/img/gb-logo-white.png" alt="Game Bridge" width="900" height="316">
+        <img src="assets/img/gb-logo-white.png" alt="Game Bridge" width="480" height="169">
       </a>
       <nav class="header-nav" aria-label="Main">
         <a class="nav-link" href="#events">Events</a>
@@ -59,7 +67,7 @@
 
   <main id="top">
     <section class="hero" aria-labelledby="hero-title">
-      <img class="hero-photo" src="assets/img/game-bridge-night.jpg" alt="" width="960" height="640">
+      <img class="hero-photo" src="assets/img/game-bridge-night.jpg" alt="" width="960" height="640" fetchpriority="high">
       <div class="wrap hero-inner">
         <h1 id="hero-title">Games industry networking in the North&nbsp;East.</h1>
         <p class="lede">A free night out for developers, studios, indies, graduates and final-year students, in Middlesbrough since 2013. Have a drink on us and meet the people making games in the region.</p>
@@ -76,7 +84,7 @@
 
         <div class="event-grid">
           <article class="event" data-event="gameBridge">
-            <img class="event-logo event-logo-gb" src="assets/img/gb-mark.png" alt="" width="288" height="320">
+            <img class="event-logo event-logo-gb" src="assets/img/gb-mark.png" alt="" width="115" height="128">
             <h3>Game Bridge</h3>
             <p class="event-summary">Our networking night at Teesside University Students&rsquo; Union. It&rsquo;s relaxed, there&rsquo;s no agenda, and it&rsquo;s open to anyone working in games. Sponsors cover free drinks and a free return coach from Newcastle.</p>
             <dl class="details">
@@ -96,7 +104,7 @@
           <article class="event" data-event="gamayoCoach">
             <img class="event-logo event-logo-gamayo" src="assets/img/gamayo-logo.png" alt="" width="296" height="80">
             <h3>GaMaYo Coach</h3>
-            <p class="event-summary">GaMaYo (Game Makers Yorkshire) is a free gathering of 300-odd game makers from across the North, held twice a year in Leeds or Wakefield. We put on a free return coach so North East developers can get there and back.</p>
+            <p class="event-summary">GaMaYo (Game Makers Yorkshire) is a free gathering of more than 300 game makers from across the North, held twice a year in Leeds or Wakefield. We put on a free return coach so North East developers can get there and back.</p>
             <dl class="details">
               <div><dt>From</dt><dd>Newcastle and Middlesbrough</dd></div>
               <div><dt>To</dt><dd>GaMaYo, and home again at the end of the night</dd></div>
@@ -113,7 +121,7 @@
 
         <p class="sponsors" data-sponsors-wrap>
           Free to attend thanks to sponsors including <span data-sponsors></span>.
-          Want to sponsor or exhibit? <a data-contact href="https://www.facebook.com/gamebridge">Get in touch</a>.
+          Want to sponsor or exhibit? <a data-contact="sponsor" href="https://www.facebook.com/gamebridge">Get in touch</a>.
         </p>
       </div>
     </section>
@@ -140,7 +148,7 @@
           <!-- Mailchimp bot trap: real people never fill this in -->
           <div class="hp" aria-hidden="true"><input type="text" name="hp" tabindex="-1" autocomplete="off"></div>
           <p class="form-message" data-form-message role="status" hidden></p>
-          <p class="fine-print">Sign-ups are handled by Mailchimp.</p>
+          <p class="consent">By subscribing you agree to get occasional emails from Game Bridge. Every email has an unsubscribe link. Sign-ups are handled by Mailchimp; see our <a href="privacy.html">privacy policy</a>.</p>
         </form>
       </div>
     </section>
@@ -149,7 +157,7 @@
   <footer class="site-footer">
     <div class="wrap footer-inner">
       <div class="footer-about">
-        <img class="footer-logo" src="assets/img/gb-logo-white.png" alt="Game Bridge" width="900" height="316" loading="lazy">
+        <img class="footer-logo" src="assets/img/gb-logo-white.png" alt="Game Bridge" width="480" height="169" loading="lazy">
         <p>Games industry networking in the North East of England since 2013.</p>
       </div>
       <nav class="footer-col" aria-label="Follow Game Bridge">
@@ -169,9 +177,10 @@
         </ul>
       </nav>
     </div>
-    <div class="wrap">
-      <p class="copyright">&copy; <span data-year>2026</span> Game Bridge</p>
-    </div>
+    <div class="wrap"><div class="footer-legal">
+      <p>&copy; <span data-year>2026</span> Game Bridge</p>
+      <p><a href="privacy.html">Privacy policy</a></p>
+    </div></div>
   </footer>
 
   <script src="site-config.js"></script>
