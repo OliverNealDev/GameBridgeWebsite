@@ -2,7 +2,7 @@
  * Everything that changes between events lives here. Edit this file, commit, done.
  *
  * Dates are YYYY-MM-DD. A "next" date that has passed is ignored automatically,
- * so a stale entry falls back to "date to be announced" rather than advertising
+ * so a stale entry falls back to "Date to be announced" rather than advertising
  * an event that already happened.
  */
 window.GAMEBRIDGE = {
@@ -15,7 +15,7 @@ window.GAMEBRIDGE = {
   // so every signup sends it as ticked. Leave empty if GDPR fields are turned off in Mailchimp.
   mailchimpConsentField: 'gdpr[3953]',
 
-  // Shown on the sponsor/exhibit prompt. Leave empty to point people at Facebook instead.
+  // Shown on the privacy page. Leave empty to point people at Facebook instead.
   contactEmail: '',
 
   socials: {
@@ -24,34 +24,24 @@ window.GAMEBRIDGE = {
     eventbrite: 'https://www.eventbrite.co.uk/o/game-bridge-4494242007',
   },
 
-  // "next" takes two optional extras for a one-off edition:
-  //   name: shown under the date and in the banner at the top of the page
-  //   note: one or two sentences on anything different this time (room, coach time)
-  // Once a "next" date passes it is shown as "the last one was...", so "last" only
-  // needs updating if you clear "next" by hand.
+  // Each card shows the date and a Get tickets button, nothing else.
+  // "name" is optional, for a one-off edition: it sits beside the date at the top of the page.
   events: {
     gameBridge: {
       next: {
         date: '2026-11-17',
         ticketUrl: 'https://www.eventbrite.co.uk/e/game-bridge-x-animex-registration-2004063342405',
         name: 'Game Bridge X Animex',
-        note: 'Part of the Animex festival, in The Hub on the top floor of the Students’ Union. You don’t need an Animex ticket. The coach leaves Newcastle at 4:45pm.',
       },
-      last: { date: '2026-06-04' },
     },
     gamayoCoach: {
       next: { date: '', ticketUrl: '' },
-      last: { date: '2025-11-13' },
     },
   },
 
-  // Most recent first. Shown as a plain list of names, so no logo files to chase.
-  sponsors: [
-    { name: 'Behaviour Interactive', url: 'https://www.bhvr.com/' },
-    { name: 'Coatsink', url: 'https://coatsink.com/' },
-    { name: 'Double Eleven', url: 'https://double11.com/' },
-    { name: 'Radical Forge', url: 'https://radicalforge.com/' },
-    { name: 'Dink', url: 'https://dinkdevs.com/' },
-    { name: 'Silent Games', url: 'https://www.silentgames-studio.com/' },
+  // Photos for the gallery popup, in the order shown. Put the files in assets/img/gallery/
+  // and list them here. The Gallery buttons stay hidden while this list is empty.
+  gallery: [
+    // { src: 'assets/img/gallery/june-2026-01.jpg', alt: 'A packed room at Game Bridge, June 2026' },
   ],
 };
