@@ -78,7 +78,7 @@
   var heroNext = document.querySelector('[data-hero-next]');
   var heroCta = document.querySelector('[data-hero-cta]');
   if (soonest && heroNext && heroCta) {
-    heroNext.append(node('strong', '', formatDate(soonest.date)), node('span', '', soonest.name));
+    heroNext.append('Next up: ', node('strong', '', formatDate(soonest.date)), ', ' + soonest.name);
     heroNext.hidden = false;
     heroCta.textContent = 'Get tickets';
     heroCta.href = soonest.href;
@@ -171,14 +171,11 @@
   var emailError = form.querySelector('#email-error');
   var message = form.querySelector('[data-form-message]');
   var button = form.querySelector('button[type="submit"]');
-  var action = (config.mailchimpAction || '').trim();
+  var honeypot = form.querySelector('.hp input');
 
-  // Without JavaScript the form still posts straight to Mailchimp in a new tab.
-  if (action) {
-    form.action = action;
-    form.method = 'post';
-    form.target = '_blank';
-  }
+  // If this script never runs, the form posts to Mailchimp's own page with the browser's
+  // validation. From here on it subscribes in place and shows its own messages instead.
+  form.noValidate = true;
 
   function showError(text) {
     emailError.textContent = text;
@@ -200,7 +197,8 @@
   }
 
   // Mailchimp's post-json endpoint only speaks JSONP, so this is a script tag, not fetch.
-  function subscribe(fields) {
+  function subscribe() {
+    var fields = new URLSearchParams(new FormData(form)).toString();
     return new Promise(function (resolve, reject) {
       var callback = 'gbMailchimp' + Date.now();
       var script = document.createElement('script');
@@ -214,7 +212,7 @@
 
       window[callback] = function (data) { cleanup(); resolve(data); };
       script.onerror = function () { cleanup(); reject(new Error('network')); };
-      script.src = action.replace('/post?', '/post-json?') + '&' + new URLSearchParams(fields).toString() + '&c=' + callback;
+      script.src = form.action.replace('/post?', '/post-json?') + '&' + fields + '&c=' + callback;
       document.body.appendChild(script);
     });
   }
@@ -227,32 +225,16 @@
     event.preventDefault();
     showMessage('');
 
-    var value = email.value.trim();
-    if (!value) { showError('Enter your email address.'); email.focus(); return; }
+    if (!email.value.trim()) { showError('Enter your email address.'); email.focus(); return; }
     if (!email.validity.valid) { showError('That doesn’t look like an email address.'); email.focus(); return; }
     showError('');
 
-    if (form.querySelector('[name="hp"]').value) return;
-
-    if (!action) {
-      showMessage('Preview only: the newsletter isn’t connected to Mailchimp yet, so nothing was sent.', '');
-      return;
-    }
-
-    var fields = {
-      EMAIL: value,
-      FNAME: form.querySelector('#fname').value.trim(),
-      LNAME: form.querySelector('#lname').value.trim(),
-    };
-    if (config.mailchimpConsentField) fields[config.mailchimpConsentField] = 'Y';
-    // Mailchimp's own honeypot field is named b_<u>_<id>; send it empty.
-    var params = new URL(action).searchParams;
-    fields['b_' + params.get('u') + '_' + params.get('id')] = '';
+    if (honeypot.value) return;
 
     button.disabled = true;
     button.textContent = 'Subscribing…';
 
-    subscribe(fields)
+    subscribe()
       .then(function (data) {
         if (data.result === 'success') {
           form.reset();

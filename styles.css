@@ -41,8 +41,8 @@
 
   --wrap: 1120px;
   --gutter: 20px;
-  --radius: 12px;
-  --radius-lg: 24px;
+  --radius: 6px;
+  --radius-lg: 10px;
   --header-h: 68px;
 }
 
@@ -122,9 +122,9 @@ p, li { text-wrap: pretty; }
   align-items: center;
   justify-content: center;
   min-height: 48px;
-  padding: 0 24px;
+  padding: 0 22px;
   border: 2px solid transparent;
-  border-radius: 999px;
+  border-radius: var(--radius);
   font: 650 1rem/1 var(--font);
   text-decoration: none;
   white-space: nowrap;
@@ -137,8 +137,8 @@ p, li { text-wrap: pretty; }
 .btn-primary { background: var(--berry); color: #fff; }
 .btn-primary:hover { background: var(--berry-dark); }
 
-.btn-outline { border-color: var(--line); background: var(--bg); color: var(--ink); }
-.btn-outline:hover { border-color: var(--ink); }
+.btn-outline { border-color: var(--ink); background: var(--bg); color: var(--ink); }
+.btn-outline:hover { background: var(--ink); color: #fff; }
 
 .btn-light { background: #fff; color: var(--ink); }
 .btn-light:hover { background: #e6e7f2; }
@@ -160,16 +160,11 @@ p, li { text-wrap: pretty; }
   position: absolute;
   inset: 0 0 auto;
   z-index: 20;
-  transition: background-color 0.2s, box-shadow 0.2s;
+  transition: background-color 0.2s;
 }
 /* script.js pins the header, then marks it once the page has scrolled. */
 .site-header.is-fixed { position: fixed; }
-.site-header.is-stuck {
-  background: rgb(21 23 47 / 94%);
-  box-shadow: 0 1px 0 rgb(255 255 255 / 8%);
-  -webkit-backdrop-filter: blur(14px) saturate(140%);
-  backdrop-filter: blur(14px) saturate(140%);
-}
+.site-header.is-stuck { background: var(--ink); }
 .header-inner {
   display: flex;
   align-items: center;
@@ -177,23 +172,24 @@ p, li { text-wrap: pretty; }
   gap: 16px;
   height: var(--header-h);
 }
+.brand { min-width: 0; }
 .brand img { width: 150px; }
 @media (min-width: 720px) { .brand img { width: 176px; } }
 
-.header-nav { display: flex; align-items: center; gap: 2px; }
+.header-nav { display: flex; flex: none; align-items: center; gap: 2px; }
 .nav-link {
   display: none;
-  padding: 10px 14px;
+  padding: 10px 12px;
   border: 0;
-  border-radius: 999px;
+  border-radius: var(--radius);
   background: none;
   color: var(--on-dark);
   font: 500 1rem/1.2 var(--font);
   text-decoration: none;
+  text-underline-offset: 6px;
   cursor: pointer;
-  transition: background-color 0.15s;
 }
-.nav-link:hover { background: rgb(255 255 255 / 12%); }
+.nav-link:hover { text-decoration: underline; }
 @media (min-width: 640px) {
   .nav-link { display: inline-block; }
   .nav-link + .icon-link { margin-left: 8px; }
@@ -206,10 +202,10 @@ p, li { text-wrap: pretty; }
   height: 44px;
   border-radius: 50%;
   color: var(--on-dark);
-  opacity: 0.85;
-  transition: opacity 0.15s, background-color 0.15s;
+  opacity: 0.8;
+  transition: opacity 0.15s;
 }
-.icon-link:hover { opacity: 1; background: rgb(255 255 255 / 12%); }
+.icon-link:hover { opacity: 1; }
 .icon-link svg { width: 19px; height: 19px; }
 
 /* ---------- Hero ---------- */
@@ -225,7 +221,7 @@ p, li { text-wrap: pretty; }
   color: var(--on-dark);
 }
 @media (min-width: 720px) {
-  .hero { min-height: min(92svh, 820px); padding-bottom: 88px; }
+  .hero { min-height: min(88svh, 720px); padding-bottom: 80px; }
 }
 
 .hero-photo {
@@ -256,29 +252,12 @@ p, li { text-wrap: pretty; }
 
 /* The soonest confirmed date. Hidden until script.js finds one. */
 .hero-next {
-  display: inline-flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 2px 10px;
-  margin: 0 0 22px;
-  padding: 8px 16px 8px 14px;
-  border: 1px solid rgb(255 255 255 / 24%);
-  border-radius: 22px;
-  background: rgb(255 255 255 / 10%);
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
-  font-size: 0.95rem;
+  margin: 0 0 16px;
+  font-size: 1.05rem;
   line-height: 1.35;
+  color: var(--on-dark-muted);
 }
-.hero-next::before {
-  content: "";
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--pink);
-}
-.hero-next strong { font-weight: 650; }
-.hero-next span { color: var(--on-dark-muted); }
+.hero-next strong { font-weight: 650; color: var(--on-dark); }
 
 .hero h1 {
   max-width: 13ch;
@@ -302,19 +281,10 @@ p, li { text-wrap: pretty; }
   margin-top: 30px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .hero-inner > * { animation: rise 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
-  .hero-inner > h1 { animation-delay: 0.05s; }
-  .hero-inner > .lede { animation-delay: 0.1s; }
-  .hero-inner > .hero-actions { animation-delay: 0.15s; }
-}
-@keyframes rise {
-  from { opacity: 0; transform: translateY(14px); }
-}
-
 /* ---------- Events ---------- */
 
-.events { padding: 64px 0 0; }
+/* The margin keeps the heading clear of the fixed header after a jump to #events. */
+.events { padding: 64px 0 0; scroll-margin-top: 16px; }
 @media (min-width: 720px) { .events { padding: 104px 0 0; } }
 
 .section-title {
@@ -336,14 +306,9 @@ p, li { text-wrap: pretty; }
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
   background: var(--bg);
-  box-shadow: 0 1px 2px rgb(21 23 47 / 4%);
   scroll-margin-top: calc(var(--header-h) + 20px);
-  transition: transform 0.2s, box-shadow 0.2s;
 }
 @media (min-width: 720px) { .event { padding: 36px 36px 32px; } }
-@media (hover: hover) {
-  .event:hover { transform: translateY(-3px); box-shadow: 0 22px 44px -24px rgb(21 23 47 / 32%); }
-}
 
 /* Both logos sit in the same slot so the two headings line up. */
 .event-logo { display: flex; align-items: center; height: 56px; margin-bottom: 22px; }
@@ -378,19 +343,17 @@ p, li { text-wrap: pretty; }
 /* ---------- Newsletter ---------- */
 
 .newsletter {
-  padding: 20px 0 64px;
+  padding: 32px 0 64px;
   scroll-margin-top: var(--header-h);
 }
-@media (min-width: 720px) { .newsletter { padding: 24px 0 104px; } }
+@media (min-width: 720px) { .newsletter { padding: 48px 0 104px; } }
 
 .newsletter-card {
   display: grid;
   gap: 28px;
   padding: 36px 24px;
   border-radius: var(--radius-lg);
-  background:
-    radial-gradient(110% 150% at 100% 0%, rgb(129 24 54 / 62%) 0%, rgb(129 24 54 / 0%) 58%),
-    var(--navy);
+  background: var(--navy);
   color: var(--on-dark);
 }
 @media (min-width: 720px) { .newsletter-card { padding: 56px; } }
@@ -418,6 +381,7 @@ p, li { text-wrap: pretty; }
   font-weight: 600;
   font-size: 0.92rem;
 }
+.optional { font-weight: 400; color: var(--on-dark-muted); }
 .field input {
   width: 100%;
   min-height: 48px;
@@ -442,8 +406,8 @@ p, li { text-wrap: pretty; }
 .form-message {
   margin: 14px 0 0;
   padding: 12px 16px;
-  border-left: 3px solid var(--on-dark-muted);
-  border-radius: 0 var(--radius) var(--radius) 0;
+  border: 1px solid var(--on-dark-muted);
+  border-radius: var(--radius);
   background: rgb(0 0 0 / 18%);
 }
 .form-message.is-ok { border-color: #7fd6a8; }
@@ -518,8 +482,7 @@ html:has(.lightbox[open]) { overflow: hidden; }
   height: auto;
   max-width: calc(100vw - 24px);
   max-height: calc(100dvh - 148px);
-  border-radius: 8px;
-  box-shadow: 0 30px 80px -30px #000;
+  border-radius: 4px;
 }
 @media (min-width: 720px) {
   .lightbox-img { max-width: calc(100vw - 184px); max-height: calc(100dvh - 128px); }
@@ -580,6 +543,8 @@ html:has(.lightbox[open]) { overflow: hidden; }
   top: 0;
   background: var(--ink);
 }
+/* Only two links here, so they fit beside the logo on a phone too. */
+.page .nav-link { display: inline-block; }
 
 .page-main { padding: 56px 0 80px; }
 @media (min-width: 720px) { .page-main { padding: 80px 0 104px; } }

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://*.list-manage.com; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; form-action 'self' https://*.list-manage.com; base-uri 'self'; object-src 'none'; frame-src 'none'; upgrade-insecure-requests">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://facebook.us8.list-manage.com; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; form-action 'self' https://*.list-manage.com; base-uri 'self'; object-src 'none'; frame-src 'none'; upgrade-insecure-requests">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <title>Game Bridge | Games industry networking in the North East</title>
   <meta name="description" content="Game Bridge is a free games industry networking night in Middlesbrough, plus a free coach to GaMaYo. Running in the North East of England since 2013.">
@@ -118,16 +118,17 @@
         <div class="newsletter-card">
           <div class="newsletter-copy">
             <h2 id="newsletter-title">Get the newsletter</h2>
-            <p>Event dates and coach bookings, straight to your inbox.</p>
+            <p>Event dates and coach bookings, by email.</p>
           </div>
-          <form class="signup" data-signup novalidate>
+          <!-- Posts to Mailchimp's own page if script.js doesn't run; with it, signup happens in place. -->
+          <form class="signup" data-signup action="https://facebook.us8.list-manage.com/subscribe/post?u=bdd7c4345598779e1ee9fa563&amp;id=2137a1345b&amp;f_id=00b3c5e2f0" method="post" target="_blank" rel="noopener">
             <div class="signup-row signup-names">
               <div class="field">
-                <label for="fname">First name</label>
+                <label for="fname">First name <span class="optional">(optional)</span></label>
                 <input id="fname" name="FNAME" type="text" autocomplete="given-name">
               </div>
               <div class="field">
-                <label for="lname">Last name</label>
+                <label for="lname">Last name <span class="optional">(optional)</span></label>
                 <input id="lname" name="LNAME" type="text" autocomplete="family-name">
               </div>
             </div>
@@ -139,9 +140,11 @@
               <button class="btn btn-light" type="submit">Subscribe</button>
             </div>
             <p class="field-error" id="email-error" hidden></p>
-            <!-- Mailchimp bot trap: real people never fill this in -->
-            <div class="hp" aria-hidden="true"><input type="text" name="hp" tabindex="-1" autocomplete="off"></div>
-            <p class="form-message" data-form-message role="status" hidden></p>
+            <!-- The audience's "Email" marketing permission; the consent line below covers it -->
+            <input type="hidden" name="gdpr[3953]" value="Y">
+            <!-- Mailchimp's bot trap, named b_<u>_<id>: real people never fill this in -->
+            <div class="hp" aria-hidden="true"><input type="text" name="b_bdd7c4345598779e1ee9fa563_2137a1345b" tabindex="-1" autocomplete="off" value=""></div>
+            <div role="status"><p class="form-message" data-form-message hidden></p></div>
             <p class="consent">By subscribing you agree to occasional emails from Game Bridge. Unsubscribe any time. <a href="privacy.html">Privacy policy</a></p>
           </form>
         </div>

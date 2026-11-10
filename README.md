@@ -18,12 +18,12 @@ Open `index.html` in a browser. Everything except `404.html` uses relative paths
 | `index.html` | The page: hero with the next date and a tickets button, the two events, newsletter signup, footer with socials, and the gallery popup |
 | `privacy.html` | Privacy policy: the newsletter, Eventbrite bookings, hosting, cookies (none), rights |
 | `404.html` | Not-found page. GitHub Pages serves it for any missing URL, so its paths are root-relative |
-| `site-config.js` | **The only file that needs editing between events.** Event dates and ticket links, gallery photos, the Mailchimp form URL, contact email, socials |
+| `site-config.js` | **The only file that needs editing between events.** Event dates and ticket links, gallery photos, contact email, socials |
 | `styles.css` | One stylesheet. Every colour and size is a custom property in `:root` at the top |
 | `script.js` | Fills the event dates and the hero from the config, runs the gallery popup and the newsletter form, sets contact links |
 | `assets/fonts/` | Archivo, self-hosted, with its SIL Open Font License. Headings use its width axis, set slightly wide |
 | `assets/img/` | Logo variants, favicon, social card, the hero photo and the GaMaYo wordmark (see [Where the content came from](#where-the-content-came-from)) |
-| `robots.txt`, `sitemap.xml` | For search engines. `robots.txt` only takes effect at a domain root, so it does nothing until the site has its own domain |
+| `robots.txt`, `sitemap.xml` | For search engines |
 
 ## Updating an event
 
@@ -69,20 +69,26 @@ the page: the left and right arrow keys, the on-screen arrows or a swipe step th
 Escape, the close button or a click outside the photo closes it. While the list is empty the buttons
 stay hidden. Around 1600px wide and under 300KB each keeps the popup quick.
 
-## Connecting the newsletter (Mailchimp)
+## The newsletter (Mailchimp)
 
-1. In Mailchimp: **Audience → Signup forms → Embedded form**.
-2. In the generated code, copy the form's `action` URL. It looks like
+The signup form in `index.html` is wired to the Game Bridge audience. It subscribes people in place,
+without leaving the page, using Mailchimp's JSONP endpoint, and Mailchimp's double opt-in email still
+applies. If `script.js` doesn't run, the same form posts to Mailchimp's own signup page in a new tab.
+
+Everything Mailchimp-specific is on the `<form>` itself, so moving to a different audience means
+changing three things there, all from **Audience → Signup forms → Embedded form** in Mailchimp:
+
+1. The form's `action` URL, which looks like
    `https://XXXX.usNN.list-manage.com/subscribe/post?u=...&id=...`
-3. Paste it into `mailchimpAction` in `site-config.js`.
+2. The bot-trap input's `name`, which is `b_<u>_<id>` using the two values from that URL.
+3. The hidden `gdpr[...]` input, which ticks the audience's "Email" marketing permission. Remove it
+   if GDPR fields are turned off in Mailchimp.
 
-The form then subscribes people in place, without leaving the page, using Mailchimp's JSONP endpoint.
-Mailchimp's double opt-in email still applies. Until it is set, the form validates normally but says
-plainly that it is not connected yet and sends nothing.
+If the `XXXX.usNN.list-manage.com` host changes, update `script-src` in the Content-Security-Policy
+at the top of `index.html` to match, or the signup will be blocked.
 
 The form sends `EMAIL`, `FNAME` and `LNAME`, which are Mailchimp's default merge tags. If the audience
-uses different tags for the names, rename the inputs' `name` in `index.html` and the matching keys in
-`script.js`.
+uses different tags for the names, rename the inputs' `name` in `index.html`.
 
 ## Where the content came from
 
@@ -108,12 +114,14 @@ route (it uses `contactEmail` from `site-config.js`, falling back to Facebook), 
 how they use Eventbrite attendee data, which is based on their own listing (the coach passenger list
 goes to the driver and a Game Bridge rep).
 
-The site sets no cookies, loads nothing from third parties and runs no analytics, which is why there
-is no cookie banner. Keep it that way, or update the policy: adding Google Analytics, a Meta pixel or
-an embedded video would need a consent banner under UK PECR.
+The site sets no cookies of its own and runs no analytics, which is why there is no cookie banner.
+The only third-party request is the newsletter signup: submitting the form calls Mailchimp, which
+sets its own cookies on `list-manage.com` (`_mcid`, `_abck`, `bm_sz`). The privacy policy says so.
+Keep it that way, or update the policy: adding Google Analytics, a Meta pixel or an embedded video
+would need a consent banner under UK PECR.
 
 Each page carries a Content-Security-Policy in a `<meta>` tag. It allows scripts only from this site
-and from `*.list-manage.com` (Mailchimp), and blocks everything else. If you add an embed or a
+and, on the home page, from the audience's Mailchimp host, and blocks everything else. If you add an embed or a
 third-party script, add its domain to the policy on each page, or it will be silently blocked.
 GitHub Pages can't set response headers, so `frame-ancestors` and HSTS aren't available; GitHub
 enforces HTTPS itself.
