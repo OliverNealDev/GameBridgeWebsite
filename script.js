@@ -228,6 +228,7 @@
     }
 
     var fields = { EMAIL: value, FNAME: form.querySelector('#fname').value.trim() };
+    if (config.mailchimpConsentField) fields[config.mailchimpConsentField] = 'Y';
     // Mailchimp's own honeypot field is named b_<u>_<id>; send it empty.
     var params = new URL(action).searchParams;
     fields['b_' + params.get('u') + '_' + params.get('id')] = '';

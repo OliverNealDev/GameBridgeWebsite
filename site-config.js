@@ -9,7 +9,11 @@ window.GAMEBRIDGE = {
   // Paste the form action URL from Mailchimp: Audience > Signup forms > Embedded form.
   // It looks like https://XXXX.usNN.list-manage.com/subscribe/post?u=...&id=...
   // Leave it empty and the form still validates, but says it is not connected yet.
-  mailchimpAction: '',
+  mailchimpAction: 'https://facebook.us8.list-manage.com/subscribe/post?u=bdd7c4345598779e1ee9fa563&id=2137a1345b&f_id=00b3c5e2f0',
+
+  // The audience's "Email" marketing-permission tick box. The signup's consent line covers it,
+  // so every signup sends it as ticked. Leave empty if GDPR fields are turned off in Mailchimp.
+  mailchimpConsentField: 'gdpr[3953]',
 
   // Shown on the sponsor/exhibit prompt. Leave empty to point people at Facebook instead.
   contactEmail: '',

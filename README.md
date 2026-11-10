@@ -106,7 +106,7 @@ enforces HTTPS itself.
 
 ## Open questions for Game Bridge
 
-1. **The Mailchimp form URL**, per the steps above.
+1. ~~The Mailchimp form URL~~ Connected 10 November 2026.
 2. **Confirmation of the privacy policy**, per the section above.
 3. **A contact email** for sponsor enquiries and privacy requests. Until there is one, both go to the
    Facebook page. Set `contactEmail` in `site-config.js`.
