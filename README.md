@@ -124,11 +124,13 @@ enforces HTTPS itself.
 
 ## Going live
 
-The site is live on GitHub Pages at **https://olivernealdev.github.io/GameBridgeWebsite/**, deployed
-from `main` / root. Every push to `main` redeploys it within a minute or two.
+The site is live at **https://gamebridge.dev/** on GitHub Pages, deployed from `main` / root. Every
+push to `main` redeploys it within a minute or two. The `CNAME` file holds the domain, so leave it in.
 
-Any static host works. If it moves to its own domain, search the repo for
-`olivernealdev.github.io/GameBridgeWebsite` and replace it with the new address. That covers the
-canonical, social-card and structured-data URLs in `index.html`, the canonical in `privacy.html`,
-`sitemap.xml` and `robots.txt`. Then drop the `/GameBridgeWebsite` prefix from the paths in
-`404.html`.
+DNS is at GoDaddy: four `A` records on `@` pointing at GitHub Pages (`185.199.108.153` to
+`185.199.111.153`) and a `www` `CNAME` to the owning account's `github.io` address. If the repo moves
+to another GitHub account, update that `www` record to the new account's `<username>.github.io`.
+`.dev` domains only work over HTTPS, so keep **Enforce HTTPS** ticked in Settings → Pages.
+
+If the domain ever changes, search the repo for `gamebridge.dev` and replace it: that covers the
+canonical, social-card and structured-data URLs, `sitemap.xml`, `robots.txt` and the `CNAME` file.

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://olivernealdev.github.io/GameBridgeWebsite/sitemap.xml
+Sitemap: https://gamebridge.dev/sitemap.xml
