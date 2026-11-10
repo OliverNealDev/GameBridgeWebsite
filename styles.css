@@ -34,6 +34,7 @@
   --line: #dfe0e7;
   --on-dark: #ffffff;
   --on-dark-muted: #c0c2d6;
+  --pink: #ff9db4;           /* berry, lightened until it reads on the dark sections */
 
   --font: "Archivo", "Helvetica Neue", Arial, sans-serif;
   --display-width: 112%;     /* Archivo's width axis: headings set a touch wide */
@@ -50,6 +51,8 @@
 *, *::before, *::after { box-sizing: border-box; }
 
 html { -webkit-text-size-adjust: 100%; }
+[hidden] { display: none !important; }
+::selection { background: var(--berry); color: #fff; }
 @media (prefers-reduced-motion: no-preference) {
   html { scroll-behavior: smooth; }
 }
@@ -74,6 +77,17 @@ h1, h2, h3 {
   line-height: 1.08;
   letter-spacing: -0.015em;
   margin: 0;
+  text-wrap: balance;
+}
+p, dd, li { text-wrap: pretty; }
+
+/* Small capitals label: the hero banner and the event status share it. */
+.hero-next-label,
+.status-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .wrap {
@@ -119,8 +133,9 @@ h1, h2, h3 {
   font: 600 1rem/1 var(--font);
   text-decoration: none;
   cursor: pointer;
-  transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+  transition: background-color 0.15s, border-color 0.15s, color 0.15s, transform 0.1s;
 }
+.btn:active { transform: translateY(1px); }
 
 .btn-primary { background: var(--berry); color: #fff; }
 .btn-primary:hover { background: var(--berry-dark); }
@@ -172,7 +187,8 @@ h1, h2, h3 {
   color: var(--on-dark);
   opacity: 0.85;
 }
-.icon-link:hover { opacity: 1; }
+.icon-link { border-radius: 50%; transition: opacity 0.15s, background-color 0.15s; }
+.icon-link:hover { opacity: 1; background: rgb(255 255 255 / 10%); }
 .icon-link svg { width: 19px; height: 19px; }
 
 /* ---------- Hero ---------- */
@@ -202,11 +218,37 @@ h1, h2, h3 {
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: linear-gradient(90deg, rgb(21 23 47 / 92%) 0%, rgb(21 23 47 / 78%) 50%, rgb(21 23 47 / 45%) 100%);
+  background:
+    linear-gradient(0deg, rgb(21 23 47 / 70%) 0%, rgb(21 23 47 / 0%) 45%),
+    linear-gradient(90deg, rgb(21 23 47 / 92%) 0%, rgb(21 23 47 / 78%) 50%, rgb(21 23 47 / 45%) 100%);
 }
 @media (max-width: 719px) {
   .hero::before { background: rgb(21 23 47 / 84%); }
 }
+
+.hero-inner { width: 100%; }
+
+/* Next-event banner. Hidden until script.js finds a confirmed date. */
+.hero-next {
+  display: inline-block;
+  margin-bottom: 22px;
+  padding: 9px 16px;
+  border: 1px solid rgb(255 255 255 / 30%);
+  border-radius: 22px;
+  background: rgb(255 255 255 / 9%);
+  color: var(--on-dark);
+  font-weight: 500;
+  font-size: 0.97rem;
+  line-height: 1.35;
+  text-decoration: none;
+  transition: background-color 0.15s, border-color 0.15s;
+}
+.hero-next:hover { background: rgb(255 255 255 / 17%); border-color: rgb(255 255 255 / 60%); }
+.hero-next-label { margin-right: 8px; color: var(--pink); }
+.hero-next strong { margin-right: 6px; font-weight: 650; white-space: nowrap; }
+.hero-next svg { display: inline-block; margin-left: 6px; vertical-align: -0.12em; transition: transform 0.15s; }
+.nowrap { white-space: nowrap; }
+.hero-next:hover svg { transform: translateX(3px); }
 
 .hero h1 {
   font-size: clamp(2.25rem, 6.2vw, 4.1rem);
@@ -233,12 +275,17 @@ h1, h2, h3 {
 .events { padding: 64px 0 56px; }
 @media (min-width: 720px) { .events { padding: 96px 0 72px; } }
 
-.events > .wrap > h2 {
-  font-size: clamp(1.9rem, 4vw, 2.6rem);
-  color: var(--ink);
+.section-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 6px 24px;
   padding-bottom: 20px;
   border-bottom: 2px solid var(--ink);
 }
+.section-head h2 { font-size: clamp(1.9rem, 4vw, 2.6rem); color: var(--ink); }
+.section-head p { margin: 0; color: var(--muted); }
 
 .event-grid { display: grid; }
 @media (min-width: 880px) {
@@ -252,6 +299,7 @@ h1, h2, h3 {
   display: flex;
   flex-direction: column;
   padding: 36px 0 40px;
+  scroll-margin-top: 16px;
 }
 @media (max-width: 879px) {
   .event + .event { border-top: 1px solid var(--line); }
@@ -264,7 +312,7 @@ h1, h2, h3 {
 .event h3 { font-size: 1.85rem; color: var(--ink); margin-bottom: 12px; }
 .event-summary { margin: 0 0 24px; color: var(--muted); max-width: 52ch; }
 
-.details { margin: 0 0 20px; border-top: 1px solid var(--line); }
+.details { margin: 0 0 24px; border-top: 1px solid var(--line); }
 .details div {
   display: grid;
   grid-template-columns: 76px 1fr;
@@ -275,21 +323,31 @@ h1, h2, h3 {
 .details dt { font-weight: 600; color: var(--ink); }
 .details dd { margin: 0; }
 
-.event-aside { margin: 0 0 20px; font-size: 0.95rem; color: var(--muted); }
+.event-aside { margin: 0 0 24px; font-size: 0.95rem; color: var(--muted); }
 
-.event-status {
-  margin: auto 0 0;
-  padding-top: 4px;
-  font-weight: 600;
+/* The date and the ticket button sit together in one panel at the foot of each card. */
+.event-book {
+  margin-top: auto;
+  padding: 20px;
+  border-radius: calc(var(--radius) * 2);
+  background: var(--bg-alt);
+}
+@media (min-width: 720px) { .event-book { padding: 24px; } }
+
+.event-status { display: grid; gap: 3px; margin: 0; }
+.status-label { color: var(--muted); }
+.status-value {
+  font-stretch: var(--display-width);
+  font-weight: 750;
+  font-size: 1.3rem;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
   color: var(--ink);
 }
-.event-status .when { color: var(--berry); }
-.event-status small {
-  display: block;
-  font-size: 0.92rem;
-  font-weight: 400;
-  color: var(--muted);
-}
+.is-confirmed .status-value { font-size: clamp(1.4rem, 2.4vw, 1.7rem); color: var(--berry); }
+.status-name { margin-top: 4px; font-weight: 600; color: var(--ink); }
+.status-note,
+.event-status small { font-size: 0.95rem; color: var(--muted); max-width: 52ch; }
 
 .event-actions {
   display: flex;
@@ -299,13 +357,50 @@ h1, h2, h3 {
   margin-top: 18px;
 }
 
+/* ---------- Sponsors ---------- */
+
 .sponsors {
-  margin: 8px 0 0;
-  padding-top: 24px;
-  color: var(--muted);
-  max-width: 78ch;
+  background: var(--bg-alt);
+  padding: 56px 0;
 }
-.sponsors a { color: var(--text); text-underline-offset: 3px; }
+@media (min-width: 720px) { .sponsors { padding: 72px 0; } }
+
+.sponsors-inner { display: grid; gap: 28px; }
+@media (min-width: 880px) {
+  .sponsors-inner { grid-template-columns: 5fr 7fr; gap: 64px; align-items: start; }
+}
+
+.sponsors h2 { font-size: clamp(1.5rem, 3vw, 1.9rem); color: var(--ink); max-width: 16ch; }
+.sponsors-copy p { margin: 14px 0 0; color: var(--muted); max-width: 44ch; }
+
+.sponsor-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  column-gap: 32px;
+  border-bottom: 1px solid var(--line);
+}
+.sponsor {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 58px;
+  padding: 12px 0;
+  border-top: 1px solid var(--line);
+  color: var(--ink);
+  font-stretch: var(--display-width);
+  font-weight: 700;
+  font-size: 1.12rem;
+  line-height: 1.2;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.sponsor svg { color: var(--muted); transition: color 0.15s, transform 0.15s; }
+a.sponsor:hover { color: var(--berry); }
+a.sponsor:hover svg { color: var(--berry); transform: translate(2px, -2px); }
 
 /* ---------- Newsletter ---------- */
 
@@ -350,7 +445,7 @@ h1, h2, h3 {
   font: 400 1rem var(--font);
 }
 .field input:focus { outline: 2px solid #fff; outline-offset: 2px; }
-.field input[aria-invalid="true"] { border-color: #ff9db4; }
+.field input[aria-invalid="true"] { border-color: var(--pink); }
 
 .field-error {
   margin: 10px 0 0;
@@ -367,7 +462,7 @@ h1, h2, h3 {
   background: rgb(0 0 0 / 15%);
 }
 .form-message.is-ok { border-color: #7fd6a8; }
-.form-message.is-error { border-color: #ff9db4; }
+.form-message.is-error { border-color: var(--pink); }
 
 
 /* ---------- Footer ---------- */
@@ -450,3 +545,9 @@ h1, h2, h3 {
 
 .page .site-footer { padding: 28px 0; }
 .page .footer-legal { margin-top: 0; padding-top: 0; border-top: 0; }
+
+/* ---------- Motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; }
+}

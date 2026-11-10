@@ -20,9 +20,19 @@ window.GAMEBRIDGE = {
     eventbrite: 'https://www.eventbrite.co.uk/o/game-bridge-4494242007',
   },
 
+  // "next" takes two optional extras for a one-off edition:
+  //   name: shown under the date and in the banner at the top of the page
+  //   note: one or two sentences on anything different this time (room, coach time)
+  // Once a "next" date passes it is shown as "the last one was...", so "last" only
+  // needs updating if you clear "next" by hand.
   events: {
     gameBridge: {
-      next: { date: '', ticketUrl: '' },
+      next: {
+        date: '2026-11-17',
+        ticketUrl: 'https://www.eventbrite.co.uk/e/game-bridge-x-animex-registration-2004063342405',
+        name: 'Game Bridge X Animex',
+        note: 'Part of the Animex festival, in The Hub on the top floor of the Students’ Union. You don’t need an Animex ticket. The coach leaves Newcastle at 4:45pm.',
+      },
       last: { date: '2026-06-04' },
     },
     gamayoCoach: {
@@ -34,10 +44,10 @@ window.GAMEBRIDGE = {
   // Most recent first. Shown as a plain list of names, so no logo files to chase.
   sponsors: [
     { name: 'Behaviour Interactive', url: 'https://www.bhvr.com/' },
-    { name: 'Radical Forge', url: 'https://radicalforge.com/' },
-    { name: 'Nosebleed Interactive', url: 'https://nosebleedinteractive.com/' },
     { name: 'Coatsink', url: 'https://coatsink.com/' },
     { name: 'Double Eleven', url: 'https://double11.com/' },
-    { name: 'Boneloaf', url: 'https://gangbeasts.game/' },
+    { name: 'Radical Forge', url: 'https://radicalforge.com/' },
+    { name: 'Dink', url: 'https://dinkdevs.com/' },
+    { name: 'Silent Games', url: 'https://www.silentgames-studio.com/' },
   ],
 };

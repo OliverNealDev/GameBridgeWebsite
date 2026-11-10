@@ -21,7 +21,34 @@
     return new Date(now.getFullYear(), now.getMonth(), now.getDate());
   }
 
+  // "Today", "Tomorrow" or "In 9 days" for anything inside three weeks, otherwise nothing.
+  function countdown(date) {
+    var days = Math.round((date - today()) / 86400000);
+    if (days === 0) return 'Today';
+    if (days === 1) return 'Tomorrow';
+    return days <= 21 ? 'In ' + days + ' days' : '';
+  }
+
+  function node(tag, className, text) {
+    var el = document.createElement(tag);
+    if (className) el.className = className;
+    if (text) el.textContent = text;
+    return el;
+  }
+
+  function icon(id) {
+    var ns = 'http://www.w3.org/2000/svg';
+    var svg = document.createElementNS(ns, 'svg');
+    var use = document.createElementNS(ns, 'use');
+    use.setAttribute('href', '#' + id);
+    svg.setAttribute('aria-hidden', 'true');
+    svg.appendChild(use);
+    return svg;
+  }
+
   // ---------- Event cards ----------
+
+  var upcoming = [];
 
   function renderEvent(card) {
     var data = (config.events || {})[card.dataset.event];
@@ -31,33 +58,56 @@
     var tickets = card.querySelector('[data-tickets]');
     var ticketsLabel = card.querySelector('[data-tickets-label]');
     var isCoach = card.dataset.event === 'gamayoCoach';
+    var label = isCoach ? 'Next coach' : 'Next date';
+    var now = today();
 
-    var next = data.next && parseDate(data.next.date);
+    var info = data.next || {};
+    var next = parseDate(info.date);
     var last = data.last && parseDate(data.last.date);
 
     status.textContent = '';
 
-    if (next && next >= today()) {
-      var when = document.createElement('span');
-      when.className = 'when';
-      when.textContent = formatDate(next);
-      status.append(isCoach ? 'Next coach: ' : 'Next: ', when);
-      if (data.next.ticketUrl) {
-        tickets.href = data.next.ticketUrl;
+    if (next && next >= now) {
+      var soon = countdown(next);
+      var when = node('time', 'status-value', formatDate(next));
+      when.dateTime = info.date;
+
+      card.classList.add('is-confirmed');
+      status.append(node('span', 'status-label', label + (soon ? ' · ' + soon : '')), when);
+      if (info.name) status.append(node('span', 'status-name', info.name));
+      if (info.note) status.append(node('span', 'status-note', info.note));
+
+      if (info.ticketUrl) {
+        tickets.href = info.ticketUrl;
         ticketsLabel.textContent = isCoach ? 'Book your seat' : 'Get tickets';
       }
+      upcoming.push({
+        date: next,
+        name: info.name || card.querySelector('h3').textContent,
+        href: info.ticketUrl || '#' + card.id,
+      });
       return;
     }
 
-    status.append(isCoach ? 'Next coach to be announced.' : 'Next date to be announced.');
-    if (last) {
-      var small = document.createElement('small');
-      small.textContent = 'The last one was ' + formatDate(last) + '.';
-      status.appendChild(small);
-    }
+    // A "next" date that has passed counts as the most recent one.
+    if (next && (!last || next > last)) last = next;
+
+    status.append(node('span', 'status-label', label), node('span', 'status-value', 'To be announced'));
+    if (last) status.append(node('small', '', 'The last one was ' + formatDate(last) + '.'));
   }
 
   document.querySelectorAll('[data-event]').forEach(renderEvent);
+
+  // The banner in the hero points at whichever event is soonest.
+  var heroNext = document.querySelector('[data-hero-next]');
+  if (heroNext && upcoming.length) {
+    var soonest = upcoming.sort(function (a, b) { return a.date - b.date; })[0];
+    var day = soonest.date.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' });
+    // The date never breaks mid-way, so on a phone the banner wraps as name / date.
+    heroNext.querySelector('[data-hero-next-text]').append(node('strong', '', soonest.name), ' ', node('span', 'nowrap', day));
+    heroNext.href = soonest.href;
+    heroNext.hidden = false;
+  }
 
   // ---------- Socials, sponsors, contact ----------
 
@@ -67,20 +117,23 @@
     if (url) link.href = url;
   });
 
-  // Sponsors read as a sentence: "A, B, C and D".
-  var sponsorSlot = document.querySelector('[data-sponsors]');
+  // The sponsor band stays hidden unless there is at least one name to show.
+  var sponsorList = document.querySelector('[data-sponsors]');
   var sponsors = config.sponsors || [];
-  if (sponsorSlot && sponsors.length) {
-    sponsors.forEach(function (sponsor, i) {
-      if (i > 0) sponsorSlot.append(i === sponsors.length - 1 ? ' and ' : ', ');
-      var a = document.createElement('a');
-      a.textContent = sponsor.name;
-      a.href = sponsor.url || '#';
-      a.rel = 'noopener';
-      sponsorSlot.appendChild(a);
+  if (sponsorList && sponsors.length) {
+    sponsors.forEach(function (sponsor) {
+      var item = document.createElement('li');
+      var inner = node(sponsor.url ? 'a' : 'span', 'sponsor', '');
+      inner.append(node('span', '', sponsor.name));
+      if (sponsor.url) {
+        inner.href = sponsor.url;
+        inner.rel = 'noopener';
+        inner.append(icon('i-out'));
+      }
+      item.appendChild(inner);
+      sponsorList.appendChild(item);
     });
-  } else if (sponsorSlot) {
-    document.querySelector('[data-sponsors-wrap]').hidden = true;
+    document.querySelector('[data-sponsors-wrap]').hidden = false;
   }
 
   // Contact links use the email when there is one, otherwise the Facebook page.

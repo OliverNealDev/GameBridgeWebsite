@@ -15,12 +15,12 @@ Open `index.html` in a browser. Everything except `404.html` uses relative paths
 
 | File | What it is |
 |---|---|
-| `index.html` | The page: hero, the two events, sponsors, newsletter signup, footer with socials |
+| `index.html` | The page: hero with a next-event banner, the two events, sponsors, newsletter signup, footer with socials |
 | `privacy.html` | Privacy policy: the newsletter, Eventbrite bookings, hosting, cookies (none), rights |
 | `404.html` | Not-found page. GitHub Pages serves it for any missing URL, so its paths are root-relative |
 | `site-config.js` | **The only file that needs editing between events.** Event dates and ticket links, the Mailchimp form URL, contact email, socials, sponsors |
 | `styles.css` | One stylesheet. Every colour and size is a custom property in `:root` at the top |
-| `script.js` | Fills the event status lines from the config, renders sponsors, sets contact links, runs the newsletter form |
+| `script.js` | Fills the event dates and the hero banner from the config, renders sponsors, sets contact links, runs the newsletter form |
 | `assets/fonts/` | Archivo, self-hosted, with its SIL Open Font License. Headings use its width axis, set slightly wide |
 | `assets/img/` | Logo variants, favicon, social card, the hero photo and the GaMaYo wordmark (see [Where the content came from](#where-the-content-came-from)) |
 | `robots.txt`, `sitemap.xml` | For search engines. `robots.txt` only takes effect at a domain root, so it does nothing until the site has its own domain |
@@ -36,10 +36,24 @@ gameBridge: {
 },
 ```
 
-With a future `next.date`, the card shows **Next: Thursday 3 December 2026** and the button goes
-straight to that Eventbrite page. Once the date passes, the card drops back to *"Next date
-to be announced"* on its own, so a forgotten update never advertises an event that already happened.
-Move the old date into `last` when you add the next one.
+With a future `next.date`, the card shows the date in its booking panel, the button goes straight to
+that Eventbrite page, and a **Next up** banner appears at the top of the page linking to the soonest
+event. Once the date passes, the banner goes and the card drops back to *"To be announced. The last
+one was..."* on its own, so a forgotten update never advertises an event that already happened.
+
+Two optional extras on `next` cover one-off editions:
+
+```js
+next: {
+  date: '2026-11-17',
+  ticketUrl: 'https://www.eventbrite.co.uk/e/...',
+  name: 'Game Bridge X Animex',                       // shown under the date and in the banner
+  note: 'In The Hub this time. Coach leaves at 4:45pm.',  // anything different from usual
+},
+```
+
+The details list on each card (where, when, coach) is written to hold for every edition, so the room
+and the exact coach time belong in `note`, not in `index.html`.
 
 ## Connecting the newsletter (Mailchimp)
 
@@ -57,15 +71,16 @@ different tag for first name, rename the input's `name` in `index.html`.
 
 ## Where the content came from
 
-Everything on the page is sourced from Game Bridge's own public channels as of 21 October 2026.
-Nothing is invented.
+Everything on the page is sourced from Game Bridge's own public channels, last checked 10 November
+2026. Nothing is invented.
 
 | Content | Source |
 |---|---|
 | Event description, venue, times, coach details, audience and 18+ rule | Game Bridge's [June 2026 Eventbrite listing](https://www.eventbrite.co.uk/e/game-bridge-june-2026-tickets-1987684355414) |
+| The 17 November 2026 date, its room, coach time and Animex note | The [Game Bridge X Animex Eventbrite listing](https://www.eventbrite.co.uk/e/game-bridge-x-animex-registration-2004063342405) |
 | "Since 2013" | Animex's November 2023 listing: *"Game Bridge is 10 years old"* |
-| Sponsors | June 2026 silver sponsors (Behaviour, Radical Forge, Nosebleed, Coatsink) and the November 2024 sponsors (Double Eleven, Boneloaf) posted on [@Game_Bridge](https://x.com/Game_Bridge) |
-| GaMaYo Coach date and route | The [GaMaYo Coach Eventbrite listing](https://www.eventbrite.co.uk/e/gamayo-coach-tickets-1801954988879), 13 November 2025 |
+| Sponsors | Behaviour, Coatsink and Double Eleven are the silver sponsors on the November 2026 listing; Radical Forge was a June 2026 silver sponsor. Dink and Silent Games were added on the organisers' say-so (Silent Games is also named as a sponsor on the 2025 GaMaYo Coach listing). Nosebleed and Boneloaf were removed as no longer supporting |
+| GaMaYo Coach date, pick-up points and the members-only rule | The [GaMaYo Coach Eventbrite listing](https://www.eventbrite.co.uk/e/gamayo-coach-tickets-1801954988879), 13 November 2025 |
 | GaMaYo description (300+ makers, twice a year) | [gamayo.co.uk/about-us](https://gamayo.co.uk/about-us/) and Game Republic |
 | Logo | Cut from the Game Bridge Eventbrite banner into transparent PNGs, with a white-wordmark version for dark backgrounds |
 | Hero photo `game-bridge-night.jpg` | Game Bridge's Facebook page |
@@ -95,12 +110,15 @@ enforces HTTPS itself.
 2. **Confirmation of the privacy policy**, per the section above.
 3. **A contact email** for sponsor enquiries and privacy requests. Until there is one, both go to the
    Facebook page. Set `contactEmail` in `site-config.js`.
-4. **The next dates** for Game Bridge and the GaMaYo Coach, with their Eventbrite links.
-5. **Any other socials** (Instagram, LinkedIn, Bluesky, Discord). Only X, Facebook and Eventbrite were
+4. **The next GaMaYo Coach date**, with its Eventbrite link. Game Bridge X Animex (17 November 2026)
+   is already in.
+5. **The sponsor list.** The November 2026 listing also credits Unreal Engine, Observer Interactive,
+   Middlesbrough Council and Teesside University as additional sponsors. They are not on the site yet.
+6. **Any other socials** (Instagram, LinkedIn, Bluesky, Discord). Only X, Facebook and Eventbrite were
    found publicly.
-6. **Better photos.** The hero photo is 960px wide, pulled from Facebook. An original from a recent
+7. **Better photos.** The hero photo is 960px wide, pulled from Facebook. An original from a recent
    event would sharpen it.
-7. **Branding.** The logo is the existing mark. If a refresh is coming, the files to replace are the
+8. **Branding.** The logo is the existing mark. If a refresh is coming, the files to replace are the
    four in `assets/img/` that start with `gb-` plus the favicon, and the two brand colours at the top
    of `styles.css`.
 
