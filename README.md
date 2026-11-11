@@ -51,6 +51,17 @@ next: {
 },
 ```
 
+A `ticketLabel` replaces **Get tickets** on the button, for an event that has sold out but still has
+a waiting list:
+
+```js
+next: {
+  date: '2026-11-26',
+  ticketUrl: 'https://gamayocoachnov26.eventbrite.co.uk',
+  ticketLabel: 'Join the waiting list',
+},
+```
+
 Venue, times and coach details live on the Eventbrite listing, not on the site.
 
 ## Adding gallery photos
@@ -132,11 +143,9 @@ enforces HTTPS itself.
 2. **Confirmation of the privacy policy**, per the section above.
 3. **A contact email** for privacy requests. Until there is one, they go to the Facebook page. Set
    `contactEmail` in `site-config.js`.
-4. **The next GaMaYo Coach date**, with its Eventbrite link. Game Bridge X Animex (17 November 2026)
-   is already in.
-5. **Copy.** The line under the headline and the one-line description on each event card are short
-   stand-ins until Olly's paragraphs arrive. They are the three `<p>` tags with the classes `lede` and
-   `event-summary` in `index.html`.
+4. ~~The next GaMaYo Coach date~~ In: 26 November 2026, sold out with a waiting list.
+5. **Copy.** The Game Bridge card carries Game Bridge's own wording. The GaMaYo Coach card is still a
+   short stand-in: it is the second `<p class="event-summary">` in `index.html`.
 6. **Any other socials** (Instagram, LinkedIn, Bluesky, Discord). Only X, Facebook and Eventbrite were
    found publicly.
 7. **Photos.** The gallery is built but empty, so its buttons are hidden: see

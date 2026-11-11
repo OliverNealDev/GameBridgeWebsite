@@ -17,6 +17,7 @@ window.GAMEBRIDGE = {
 
   // Each card shows the date and a Get tickets button, nothing else.
   // "name" is optional, for a one-off edition: it sits beside the date at the top of the page.
+  // "ticketLabel" is optional too, and replaces "Get tickets" on the button, e.g. once sold out.
   events: {
     gameBridge: {
       next: {
@@ -26,7 +27,12 @@ window.GAMEBRIDGE = {
       },
     },
     gamayoCoach: {
-      next: { date: '', ticketUrl: '' },
+      // Sold out, but the listing has a waiting list, so the button still goes there.
+      next: {
+        date: '2026-11-26',
+        ticketUrl: 'https://gamayocoachnov26.eventbrite.co.uk',
+        ticketLabel: 'Join the waiting list',
+      },
     },
   },
 

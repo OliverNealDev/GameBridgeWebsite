@@ -65,11 +65,13 @@
     card.querySelector('[data-date]').replaceChildren(when);
     card.classList.add('is-confirmed');
     if (info.ticketUrl) tickets.href = info.ticketUrl;
+    if (info.ticketLabel) tickets.textContent = info.ticketLabel;
 
     upcoming.push({
       date: date,
       name: info.name || card.querySelector('h3').textContent,
       href: tickets.href,
+      label: tickets.textContent,
     });
   });
 
@@ -80,7 +82,7 @@
   if (soonest && heroNext && heroCta) {
     heroNext.append('Next up: ', node('strong', '', formatDate(soonest.date)), ', ' + soonest.name);
     heroNext.hidden = false;
-    heroCta.textContent = 'Get tickets';
+    heroCta.textContent = soonest.label;
     heroCta.href = soonest.href;
     heroCta.rel = 'noopener';
   }

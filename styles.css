@@ -267,13 +267,6 @@ p, li { text-wrap: pretty; }
   letter-spacing: -0.03em;
 }
 
-.lede {
-  max-width: 44ch;
-  margin: 20px 0 0;
-  font-size: clamp(1.08rem, 1.6vw, 1.25rem);
-  color: var(--on-dark-muted);
-}
-
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
