@@ -27,11 +27,10 @@ window.GAMEBRIDGE = {
       },
     },
     gamayoCoach: {
-      // Sold out, but the listing has a waiting list, so the button still goes there.
+      // Sold out with a waiting list. The button still says Get tickets: the listing explains.
       next: {
         date: '2026-11-26',
         ticketUrl: 'https://gamayocoachnov26.eventbrite.co.uk',
-        ticketLabel: 'Join the waiting list',
       },
     },
   },

@@ -287,9 +287,10 @@ p, li { text-wrap: pretty; }
 }
 @media (min-width: 720px) { .section-title { margin-bottom: 40px; } }
 
-.event-grid { display: grid; gap: 20px; }
+/* Stacked, both cards take the height of the taller one. */
+.event-grid { display: grid; gap: 20px; grid-auto-rows: 1fr; }
 @media (min-width: 820px) {
-  .event-grid { grid-template-columns: 1fr 1fr; gap: 24px; }
+  .event-grid { grid-template-columns: 1fr 1fr; gap: 24px; grid-auto-rows: auto; }
 }
 
 .event {
@@ -310,8 +311,10 @@ p, li { text-wrap: pretty; }
 
 .event h3 { font-size: clamp(1.6rem, 3vw, 1.95rem); color: var(--ink); }
 .event-summary { max-width: 46ch; margin: 12px 0 28px; color: var(--muted); }
+.event-summary p { margin: 0; }
+.event-summary p + p { margin-top: 12px; }
 
-/* The date and the ticket button are all a card carries below its one line of copy. */
+/* The date and the ticket button are all a card carries below its copy. */
 .event-foot {
   display: flex;
   flex-wrap: wrap;
@@ -332,6 +335,15 @@ p, li { text-wrap: pretty; }
   color: var(--muted);
 }
 .is-confirmed .event-date { font-size: clamp(1.25rem, 2.2vw, 1.45rem); font-weight: 750; color: var(--berry); }
+
+/* Side by side, the cards share one set of rows (logo, heading, copy, foot), so each part is
+   the same height in both and the two divider lines sit level however much copy a card has. */
+@supports (grid-template-rows: subgrid) {
+  @media (min-width: 820px) {
+    .event { display: grid; grid-template-rows: subgrid; grid-row: span 4; row-gap: 0; }
+    .event-foot { margin-top: 0; }
+  }
+}
 
 /* ---------- Newsletter ---------- */
 

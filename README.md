@@ -35,7 +35,7 @@ gameBridge: {
 },
 ```
 
-Each card carries one line of copy, the date and a button, and nothing else. With a future
+Each card carries a short piece of copy, the date and a button, and nothing else. With a future
 `next.date`, the card shows the date, its **Get tickets** button goes straight to that Eventbrite
 page, and the top of the page shows the soonest date with its own **Get tickets** button. Once the
 date passes, the card drops back to *"Date to be announced"* with a **Get notified** button that
@@ -51,8 +51,8 @@ next: {
 },
 ```
 
-A `ticketLabel` replaces **Get tickets** on the button, for an event that has sold out but still has
-a waiting list:
+A `ticketLabel` replaces **Get tickets** on the button. Neither event uses one at the moment: the
+sold-out GaMaYo Coach keeps **Get tickets** and lets its Eventbrite listing explain. To set one:
 
 ```js
 next: {
@@ -145,7 +145,7 @@ enforces HTTPS itself.
    `contactEmail` in `site-config.js`.
 4. ~~The next GaMaYo Coach date~~ In: 26 November 2026, sold out with a waiting list.
 5. **Copy.** The Game Bridge card carries Game Bridge's own wording. The GaMaYo Coach card is still a
-   short stand-in: it is the second `<p class="event-summary">` in `index.html`.
+   short stand-in: it is the second `<div class="event-summary">` in `index.html`.
 6. **Any other socials** (Instagram, LinkedIn, Bluesky, Discord). Only X, Facebook and Eventbrite were
    found publicly.
 7. **Photos.** The gallery is built but empty, so its buttons are hidden: see
